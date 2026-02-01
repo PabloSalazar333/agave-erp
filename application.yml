@@ -1,11 +1,34 @@
 server:
   port: 8080
 
+spring:
+  application:
+    name: agave-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/agave_erp
+    username: agave_user
+    password: agave_password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+
 management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,prometheus
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 
 info:
   app:
