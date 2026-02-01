@@ -42,6 +42,7 @@ public class AuthIntegrationTest {
                 .firstName("Test")
                 .lastName("User")
                 .active(true)
+                .role(com.agave.api.domain.Role.ROLE_ADMIN)
                 .build();
         userRepository.save(user);
     }

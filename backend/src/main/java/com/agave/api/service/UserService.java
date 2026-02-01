@@ -39,6 +39,7 @@ public class UserService {
                 .lastName(dto.getLastName())
                 .active(true)
                 .tenant(tenant)
+                .role(dto.getRole() != null ? dto.getRole() : com.agave.api.domain.Role.ROLE_USER)
                 .build();
 
         User savedUser = userRepository.save(user);
@@ -69,6 +70,7 @@ public class UserService {
                 .createdAt(user.getCreatedAt())
                 .tenantId(user.getTenant() != null ? user.getTenant().getId() : null)
                 .tenantName(user.getTenant() != null ? user.getTenant().getName() : null)
+                .role(user.getRole())
                 .build();
     }
 }

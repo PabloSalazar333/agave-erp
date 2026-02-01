@@ -17,4 +17,5 @@ public class UserResponseDTO {
     private LocalDateTime createdAt;
     private UUID tenantId;
     private String tenantName;
+    private com.agave.api.domain.Role role;
 }
