@@ -19,11 +19,17 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+    private final TenantService tenantService;
 
     @Transactional
     public UserResponseDTO createUser(UserCreateDTO dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("Email already in use");
+        }
+
+        com.agave.api.domain.Tenant tenant = null;
+        if (dto.getTenantId() != null) {
+            tenant = tenantService.getTenantById(dto.getTenantId());
         }
 
         User user = User.builder()
@@ -32,6 +38,7 @@ public class UserService {
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .active(true)
+                .tenant(tenant)
                 .build();
 
         User savedUser = userRepository.save(user);
@@ -60,6 +67,8 @@ public class UserService {
                 .lastName(user.getLastName())
                 .active(user.isActive())
                 .createdAt(user.getCreatedAt())
+                .tenantId(user.getTenant() != null ? user.getTenant().getId() : null)
+                .tenantName(user.getTenant() != null ? user.getTenant().getName() : null)
                 .build();
     }
 }
