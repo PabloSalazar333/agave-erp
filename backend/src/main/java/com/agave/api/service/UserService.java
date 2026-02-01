@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserResponseDTO createUser(UserCreateDTO dto) {
@@ -27,7 +28,7 @@ public class UserService {
 
         User user = User.builder()
                 .email(dto.getEmail())
-                .password(dto.getPassword()) // Note: Should be hashed in real app
+                .password(passwordEncoder.encode(dto.getPassword()))
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .active(true)
