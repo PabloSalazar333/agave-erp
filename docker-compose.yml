@@ -42,6 +42,20 @@ services:
     build: ./services/identity
     container_name: agave-identity
     ports:
+      - "8082:8082"
+    environment:
+      - SERVER_PORT=8082
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://agave-discovery:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://agave-db:5432/agave_erp
+      - JAVA_OPTS=-Xmx256m -Xms256m
+    depends_on:
+      - discovery-service
+      - agave-db
+
+  core-backend:
+    build: ./backend
+    container_name: agave-core
+    ports:
       - "8081:8081"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://agave-discovery:8761/eureka/
