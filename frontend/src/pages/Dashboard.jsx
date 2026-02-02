@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Responsive, WidthProvider } from 'react-grid-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { BarChart, Activity, Users, DollarSign } from 'lucide-react';
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
+// import 'react-grid-layout/css/styles.css';
+// import 'react-resizable/css/styles.css';
 
-const ResponsiveGridLayout = WidthProvider(Responsive);
+
 
 const Dashboard = () => {
     // Default layout
@@ -72,38 +71,29 @@ const Dashboard = () => {
                 </button>
             </div>
 
-            <ResponsiveGridLayout
-                className="layout"
-                layouts={{ lg: layout }}
-                breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-                cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-                rowHeight={60}
-                onLayoutChange={onLayoutChange}
-                isDraggable={true}
-                isResizable={true}
-                margin={[16, 16]}
-            >
-                <div key="stats1">
+            {/* Temporary Static Layout due to Library Import Issues */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="lg:col-span-1">
                     <StatCard title="Total Revenue" value="$45,231.89" icon={DollarSign} color="bg-blue-500" />
                 </div>
-                <div key="stats2">
+                <div className="lg:col-span-1">
                     <StatCard title="Active Users" value="+2350" icon={Users} color="bg-purple-500" />
                 </div>
-                <div key="stats3">
+                <div className="lg:col-span-1">
                     <StatCard title="Sales" value="+12,234" icon={BarChart} color="bg-orange-500" />
                 </div>
-                <div key="stats4">
+                <div className="lg:col-span-1">
                     <StatCard title="Active Now" value="+573" icon={Activity} color="bg-green-500" />
                 </div>
 
-                <div key="chart1" className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div className="lg:col-span-3 bg-white rounded-xl shadow-sm border border-gray-100 p-6 min-h-[300px]">
                     <h3 className="text-lg font-semibold mb-4">Revenue Overview</h3>
                     <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400">
                         Chart Placeholder (Waiting for Recharts)
                     </div>
                 </div>
 
-                <div key="recent" className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div className="lg:col-span-1 bg-white rounded-xl shadow-sm border border-gray-100 p-6 min-h-[300px]">
                     <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
                     <div className="space-y-4">
                         {[1, 2, 3, 4, 5].map((i) => (
@@ -117,7 +107,7 @@ const Dashboard = () => {
                         ))}
                     </div>
                 </div>
-            </ResponsiveGridLayout>
+            </div>
         </div>
     );
 };

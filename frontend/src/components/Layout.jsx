@@ -3,11 +3,24 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Users, Package, FileText, Settings, LogOut, Menu, X, Bell, Utensils, Bed, Wrench, HelpCircle, Code } from 'lucide-react';
 import logo from '../assets/logo.png';
 import AgaveCopilot from './AgaveCopilot'; // Import Copilot
+import { useLanguage } from '../context/LanguageContext';
+import { Globe } from 'lucide-react';
 
 const Layout = () => {
     const location = useLocation();
+    const { t, language, toggleLanguage } = useLanguage();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    // Safer local storage parsing
+    let user = {};
+    try {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser && storedUser !== 'undefined') {
+            user = JSON.parse(storedUser);
+        }
+    } catch (e) {
+        console.error("Failed to parse user from local storage", e);
+    }
     const currentIndustry = localStorage.getItem('dev_industry') || 'GENERIC';
 
     // Helper to check if user has ANY of the required roles AND matches Industry
@@ -18,9 +31,12 @@ const Layout = () => {
         }
 
         // 2. Check Roles
-        if (!user.roles || user.roles.length === 0) return false;
-        if (user.roles.some(r => r.name === 'ROLE_SUPER_ADMIN')) return true;
-        return user.roles.some(r => item.allowed.includes(r.name));
+        // Fix: Backend returns single role string "ROLE_ADMIN", not an array.
+        if (!user.role) return false;
+        if (user.role === 'ROLE_SUPER_ADMIN') return true;
+
+        // If the item allows the user's specific role
+        return item.allowed.includes(user.role);
     };
 
     const allNavigation = [
@@ -121,7 +137,7 @@ const Layout = () => {
                                     }`}
                             >
                                 <Icon className={`w-5 h-5 mr-3 ${isActive ? 'text-primary' : 'text-gray-400'}`} />
-                                {item.name}
+                                {t(item.name.toLowerCase().replace(/ & /g, '_').replace(/ /g, '_'))}
                             </Link>
                         );
                     })}
@@ -133,7 +149,7 @@ const Layout = () => {
                         className="flex items-center w-full px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors"
                     >
                         <LogOut className="w-5 h-5 mr-3" />
-                        Sign Out
+                        {t('sign_out')}
                     </button>
                 </div>
             </aside>
@@ -157,10 +173,34 @@ const Layout = () => {
                     </div>
 
                     <div className="hidden md:flex items-center text-lg font-semibold text-gray-800">
-                        {navigation.find(item => item.href === location.pathname)?.name || 'Dashboard'}
+                        {t((navigation.find(item => item.href === location.pathname)?.name || 'dashboard').toLowerCase().replace(/ & /g, '_').replace(/ /g, '_'))}
                     </div>
 
                     <div className="flex items-center gap-4">
+                        {/* Language Toggle */}
+                        <button
+                            onClick={toggleLanguage}
+                            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg flex items-center gap-2"
+                        >
+                            <Globe className="w-5 h-5" />
+                            <span className="text-sm font-medium">{language.toUpperCase()}</span>
+                        </button>
+
+                        {/* Role Switcher (Dev Only) */}
+                        <select
+                            className="text-xs border border-gray-200 rounded p-1"
+                            value={user.role || ''}
+                            onChange={(e) => {
+                                const newUser = { ...user, role: e.target.value };
+                                localStorage.setItem('user', JSON.stringify(newUser));
+                                window.location.reload();
+                            }}
+                        >
+                            <option value="ROLE_ADMIN">Admin</option>
+                            <option value="ROLE_HR">HR</option>
+                            <option value="ROLE_SALES">Sales</option>
+                            <option value="ROLE_USER">User</option>
+                        </select>
                         <button className="p-2 text-gray-400 hover:text-primary hover:bg-gray-50 rounded-full relative">
                             <Bell className="w-5 h-5" />
                             <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>

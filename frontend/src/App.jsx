@@ -24,38 +24,42 @@ const ProtectedRoute = ({ children }) => {
     return children;
 };
 
+import { LanguageProvider } from './context/LanguageContext';
+
 function App() {
     return (
-        <ThemeProvider>
-            <Router>
-                <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
+        <LanguageProvider>
+            <ThemeProvider>
+                <Router>
+                    <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
 
-                    {/* Protected Routes wrapped in Layout */}
-                    <Route
-                        path="/"
-                        element={
-                            <ProtectedRoute>
-                                <Layout />
-                            </ProtectedRoute>
-                        }
-                    >
-                        <Route index element={<Dashboard />} />
-                        <Route path="users" element={<Users />} />
-                        <Route path="restaurant/tables" element={<TableMap />} />
-                        <Route path="service/tickets" element={<ServiceCalendar />} />
-                        <Route path="hotel/rooms" element={<HotelRooms />} />
-                        <Route path="inventory" element={<Inventory />} />
-                        <Route path="analytics" element={<Analytics />} />
-                        <Route path="hr" element={<HR />} />
-                        <Route path="settings" element={<Settings />} />
-                        <Route path="help" element={<Help />} />
-                        <Route path="dev/wiki" element={<Wiki />} />
-                    </Route>
-                </Routes>
-            </Router>
-        </ThemeProvider>
+                        {/* Protected Routes wrapped in Layout */}
+                        <Route
+                            path="/"
+                            element={
+                                <ProtectedRoute>
+                                    <Layout />
+                                </ProtectedRoute>
+                            }
+                        >
+                            <Route index element={<Dashboard />} />
+                            <Route path="users" element={<Users />} />
+                            <Route path="restaurant/tables" element={<TableMap />} />
+                            <Route path="service/tickets" element={<ServiceCalendar />} />
+                            <Route path="hotel/rooms" element={<HotelRooms />} />
+                            <Route path="inventory" element={<Inventory />} />
+                            <Route path="analytics" element={<Analytics />} />
+                            <Route path="hr" element={<HR />} />
+                            <Route path="settings" element={<Settings />} />
+                            <Route path="help" element={<Help />} />
+                            <Route path="dev/wiki" element={<Wiki />} />
+                        </Route>
+                    </Routes>
+                </Router>
+            </ThemeProvider>
+        </LanguageProvider>
     );
 }
 
