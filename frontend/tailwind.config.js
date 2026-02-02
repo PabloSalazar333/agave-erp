@@ -7,7 +7,7 @@ export default {
     theme: {
         extend: {
             colors: {
-                primary: '#1F6E8C', // Agave Teal
+                primary: 'var(--color-primary)',
                 secondary: '#84A98C', // Sage Green
                 accent: '#D4A373', // Earth Gold
                 dark: '#0E2A3A', // Navy Charcoal

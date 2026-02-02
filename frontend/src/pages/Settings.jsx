@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Settings as SettingsIcon, Shield, RefreshCw } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const Settings = () => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
@@ -91,6 +92,7 @@ const Settings = () => {
                 </div>
             </div>
 
+            <StyleCustomizer />
             {/* General Settings Placeholder */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center text-gray-400">
                 <SettingsIcon className="w-12 h-12 mx-auto mb-3 opacity-20" />

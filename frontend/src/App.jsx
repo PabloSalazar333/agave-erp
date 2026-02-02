@@ -6,6 +6,7 @@ import Users from './pages/Users';
 import Inventory from './pages/Inventory';
 import HR from './pages/HR';
 import Settings from './pages/Settings';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Simple protected route component
 const ProtectedRoute = ({ children }) => {
@@ -41,29 +42,30 @@ const DashboardHome = () => {
 
 function App() {
     return (
-        <Router>
-            <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
+        <ThemeProvider>
+            <Router>
+                <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
 
-                {/* Protected Routes wrapped in Layout */}
-                <Route
-                    path="/"
-                    element={
-                        <ProtectedRoute>
-                            <Layout />
-                        </ProtectedRoute>
-                    }
-                >
-                    <Route index element={<DashboardHome />} />
-                    <Route path="users" element={<Users />} />
-                    <Route path="inventory" element={<Inventory />} />
-                    <Route path="hr" element={<HR />} />
-                    <Route path="settings" element={<Settings />} />
-                </Route>
-            </Routes>
-        </Router>
-    );
+                    {/* Protected Routes wrapped in Layout */}
+                    <Route
+                        path="/"
+                        element={
+                            <ProtectedRoute>
+                                <Layout />
+                            </ProtectedRoute>
+                        }
+                    >
+                        <Route index element={<DashboardHome />} />
+                        <Route path="users" element={<Users />} />
+                        <Route path="inventory" element={<Inventory />} />
+                        <Route path="hr" element={<HR />} />
+                        <Route path="settings" element={<Settings />} />
+                    </Route>
+                </Routes>
+            </Router>
+            );
 }
 
-export default App;
+            export default App;

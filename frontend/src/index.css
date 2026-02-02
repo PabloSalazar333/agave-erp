@@ -4,8 +4,16 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --color-primary: #1F6E8C;
+    --font-family-sans: 'Inter', system-ui, sans-serif;
+    --radius-lg: 0.75rem;
+}
+
 @layer base {
     body {
-        @apply bg-surface text-dark font-sans antialiased;
+        background-color: #F8F9FA;
+        font-family: var(--font-family-sans);
+        @apply text-dark antialiased;
     }
 }
