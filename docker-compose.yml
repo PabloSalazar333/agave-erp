@@ -38,5 +38,18 @@ services:
     depends_on:
       - discovery-service
 
+  identity-service:
+    build: ./services/identity
+    container_name: agave-identity
+    ports:
+      - "8081:8081"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://agave-discovery:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://agave-db:5432/agave_erp
+      - JAVA_OPTS=-Xmx256m -Xms256m
+    depends_on:
+      - discovery-service
+      - agave-db
+
 volumes:
   postgres_data_v2:
