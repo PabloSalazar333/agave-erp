@@ -20,16 +20,16 @@ pipeline {
                 stage('Build Discovery') {
                     steps {
                         dir('services/discovery') {
-                            sh 'chmod +x gradlew'
-                            sh './gradlew clean build -x test'
+                            sh 'chmod +x ../identity/gradlew'
+                            sh '../identity/gradlew clean build -x test'
                         }
                     }
                 }
                 stage('Build Gateway') {
                     steps {
                         dir('services/gateway') {
-                            sh 'chmod +x gradlew'
-                            sh './gradlew clean build -x test'
+                            sh 'chmod +x ../identity/gradlew'
+                            sh '../identity/gradlew clean build -x test'
                         }
                     }
                 }
