@@ -1,15 +1,18 @@
+version: '3.8'
+
 services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: agave-postgres
+  agave-db:
+    image: postgres:15-alpine
+    container_name: agave_postgres
     environment:
       POSTGRES_DB: agave_erp
-      POSTGRES_USER: agave_user
-      POSTGRES_PASSWORD: agave_password
+      POSTGRES_USER: agave_admin
+      POSTGRES_PASSWORD: secure_password_123
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: always
 
 volumes:
   postgres_data:

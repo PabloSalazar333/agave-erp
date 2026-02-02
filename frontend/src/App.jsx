@@ -8,6 +8,9 @@ import HR from './pages/HR';
 import Settings from './pages/Settings';
 import Dashboard from './pages/Dashboard';
 import TableMap from './pages/TableMap';
+import ServiceCalendar from './pages/ServiceCalendar';
+import HotelRooms from './pages/HotelRooms';
+import Analytics from './pages/Analytics';
 import { ThemeProvider } from './context/ThemeContext';
 
 // Simple protected route component
@@ -39,7 +42,10 @@ function App() {
                         <Route index element={<Dashboard />} />
                         <Route path="users" element={<Users />} />
                         <Route path="restaurant/tables" element={<TableMap />} />
+                        <Route path="service/tickets" element={<ServiceCalendar />} />
+                        <Route path="hotel/rooms" element={<HotelRooms />} />
                         <Route path="inventory" element={<Inventory />} />
+                        <Route path="analytics" element={<Analytics />} />
                         <Route path="hr" element={<HR />} />
                         <Route path="settings" element={<Settings />} />
                     </Route>
