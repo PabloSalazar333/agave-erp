@@ -1,94 +1,79 @@
-import React, { useState } from 'react';
-import { Leaf, Lock, Mail, ArrowRight } from 'lucide-react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import { useState } from 'react';
 
-function App() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+// Simple protected route component
+const ProtectedRoute = ({ children }) => {
+    // In a real app, verify token validity
+    const token = localStorage.getItem('token');
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-        console.log('Login attempt:', { email, password });
-        // TODO: Connect to Backend API
+    if (!token) {
+        return <Navigate to="/login" replace />;
+    }
+
+    return children;
+};
+
+// Placeholder for Dashboard
+const Dashboard = () => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.reload();
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-surface relative overflow-hidden">
-            {/* Background Decor */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-[10%] right-[10%] w-[30%] h-[30%] bg-secondary/10 rounded-full blur-3xl"></div>
-            </div>
-
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 relative z-10 border border-gray-100">
-
-                {/* Logo Section */}
-                <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl mb-4 shadow-lg transform rotate-3 hover:rotate-6 transition-all duration-300">
-                        <Leaf className="w-8 h-8 text-white" />
+        <div className="min-h-screen bg-surface p-8">
+            <div className="max-w-7xl mx-auto">
+                <div className="bg-white rounded-xl shadow-sm p-6 flex justify-between items-center mb-8">
+                    <h1 className="text-2xl font-bold text-dark">Dashboard</h1>
+                    <div className="flex items-center gap-4">
+                        <span className="text-gray-600">Welcome, {user.name || 'User'}</span>
+                        <button
+                            onClick={handleLogout}
+                            className="px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        >
+                            Sign Out
+                        </button>
                     </div>
-                    <h1 className="text-3xl font-bold text-dark tracking-tight">Agave ERP</h1>
-                    <p className="text-gray-500 mt-2 text-sm">Welcome back, please login to your account.</p>
                 </div>
 
-                {/* Login Form */}
-                <form onSubmit={handleLogin} className="space-y-6">
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700 ml-1">Email</label>
-                        <div className="relative group">
-                            <Mail className="w-5 h-5 text-gray-400 absolute left-3 top-3 group-focus-within:text-primary transition-colors" />
-                            <input
-                                type="email"
-                                required
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all bg-gray-50 focus:bg-white"
-                                placeholder="name@company.com"
-                            />
-                        </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <h3 className="text-lg font-semibold text-gray-700 mb-2">Total Revenue</h3>
+                        <p className="text-3xl font-bold text-primary">$24,500</p>
                     </div>
-
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700 ml-1">Password</label>
-                        <div className="relative group">
-                            <Lock className="w-5 h-5 text-gray-400 absolute left-3 top-3 group-focus-within:text-primary transition-colors" />
-                            <input
-                                type="password"
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all bg-gray-50 focus:bg-white"
-                                placeholder="••••••••"
-                            />
-                        </div>
+                    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <h3 className="text-lg font-semibold text-gray-700 mb-2">Active Orders</h3>
+                        <p className="text-3xl font-bold text-secondary">12</p>
                     </div>
-
-                    <div className="flex items-center justify-between text-sm">
-                        <label className="flex items-center text-gray-600 cursor-pointer hover:text-dark">
-                            <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary/25 mr-2" />
-                            Remember me
-                        </label>
-                        <a href="#" className="font-medium text-primary hover:text-primary/80 transition-colors">Forgot password?</a>
+                    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <h3 className="text-lg font-semibold text-gray-700 mb-2">Pending Tasks</h3>
+                        <p className="text-3xl font-bold text-accent">5</p>
                     </div>
-
-                    <button
-                        type="submit"
-                        className="w-full bg-primary hover:bg-[#155A75] text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-primary/25 hover:shadow-primary/40 focus:ring-4 focus:ring-primary/20 transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
-                    >
-                        Sign In <ArrowRight className="w-5 h-5" />
-                    </button>
-                </form>
-
-                <p className="mt-8 text-center text-sm text-gray-500">
-                    Don't have an account?{' '}
-                    <a href="#" className="font-semibold text-primary hover:underline">Contact Support</a>
-                </p>
-            </div>
-
-            {/* Footer */}
-            <div className="absolute bottom-4 text-center w-full text-xs text-gray-400">
-                &copy; 2026 Agave Solutions. All rights reserved.
+                </div>
             </div>
         </div>
+    );
+};
+
+function App() {
+    return (
+        <Router>
+            <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route
+                    path="/"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+            </Routes>
+        </Router>
     );
 }
 
