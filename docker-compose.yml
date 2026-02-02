@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   agave-db:
-    image: postgres:15-alpine
+    image: postgres:16-alpine
     container_name: agave_postgres
     environment:
       POSTGRES_DB: agave_erp
@@ -11,8 +11,8 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_v2:/var/lib/postgresql/data
     restart: always
 
 volumes:
-  postgres_data:
+  postgres_data_v2:
