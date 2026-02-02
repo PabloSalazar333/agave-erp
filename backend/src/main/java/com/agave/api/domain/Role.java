@@ -9,5 +9,10 @@ public enum Role {
     ROLE_LOGISTICS,
     ROLE_SALES,
     ROLE_PURCHASING,
-    ROLE_USER
+    ROLE_USER,
+    // Technical/Specialized Roles
+    ROLE_DEV,
+    ROLE_QA,
+    ROLE_BA, // Business Analyst
+    ROLE_SUPPORT
 }

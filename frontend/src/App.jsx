@@ -12,6 +12,7 @@ import ServiceCalendar from './pages/ServiceCalendar';
 import HotelRooms from './pages/HotelRooms';
 import Analytics from './pages/Analytics';
 import Help from './pages/Help';
+import Wiki from './pages/Wiki';
 import { ThemeProvider } from './context/ThemeContext';
 
 // Simple protected route component
@@ -50,6 +51,7 @@ function App() {
                         <Route path="hr" element={<HR />} />
                         <Route path="settings" element={<Settings />} />
                         <Route path="help" element={<Help />} />
+                        <Route path="dev/wiki" element={<Wiki />} />
                     </Route>
                 </Routes>
             </Router>

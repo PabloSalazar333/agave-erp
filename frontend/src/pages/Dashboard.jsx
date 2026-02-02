@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { BarChart, Activity, Users, DollarSign } from 'lucide-react';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
