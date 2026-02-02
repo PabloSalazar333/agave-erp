@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { Lock, Mail, Loader2, ArrowRight } from 'lucide-react';
+import logo from '../assets/logo.png';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -40,8 +41,8 @@ const Login = () => {
             <div className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
                 {/* Header */}
                 <div className="bg-primary/5 p-8 text-center">
-                    <div className="bg-white w-16 h-16 rounded-xl shadow-sm flex items-center justify-center mx-auto mb-4">
-                        <div className="text-3xl font-bold text-primary">A</div>
+                    <div className="flex justify-center mb-4">
+                        <img src={logo} alt="Agave ERP Logo" className="h-20 w-auto" />
                     </div>
                     <h2 className="text-2xl font-bold text-dark">Welcome Back</h2>
                     <p className="text-gray-500 mt-2">Sign in to your Agave ERP account</p>
