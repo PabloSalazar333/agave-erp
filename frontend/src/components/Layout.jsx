@@ -3,6 +3,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Users, Package, FileText, Settings, LogOut, Menu, X, Bell, Utensils, Bed, Wrench } from 'lucide-react';
 import { LayoutDashboard, Users, Package, FileText, Settings, LogOut, Menu, X, Bell, Utensils, Bed, Wrench } from 'lucide-react';
 import logo from '../assets/logo.png';
+import AgaveCopilot from './AgaveCopilot'; // Import Copilot
 
 const Layout = () => {
     const location = useLocation();
@@ -170,6 +171,8 @@ const Layout = () => {
                     <Outlet />
                 </div>
             </main>
+            {/* AI Assistant Widget */}
+            <AgaveCopilot />
         </div>
     );
 };
