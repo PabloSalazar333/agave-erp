@@ -15,12 +15,39 @@ pipeline {
             }
         }
 
-        stage('Backend: Build & Test') {
-            steps {
-                dir('backend') {
-                    // Give execution permission to gradlew
-                    sh 'chmod +x gradlew'
-                    sh './gradlew clean build -x test' // Skipping tests slightly for speed in dev, remove -x test for prod
+        stage('Backend: Build Microservices') {
+            parallel {
+                stage('Build Discovery') {
+                    steps {
+                        dir('services/discovery') {
+                            sh 'chmod +x gradlew'
+                            sh './gradlew clean build -x test'
+                        }
+                    }
+                }
+                stage('Build Gateway') {
+                    steps {
+                        dir('services/gateway') {
+                            sh 'chmod +x gradlew'
+                            sh './gradlew clean build -x test'
+                        }
+                    }
+                }
+                stage('Build Identity') {
+                    steps {
+                        dir('services/identity') {
+                            sh 'chmod +x gradlew'
+                            sh './gradlew clean build -x test'
+                        }
+                    }
+                }
+                stage('Build Core Backend') {
+                    steps {
+                        dir('backend') {
+                            sh 'chmod +x gradlew'
+                            sh './gradlew clean build -x test'
+                        }
+                    }
                 }
             }
         }
@@ -37,7 +64,10 @@ pipeline {
         stage('Docker: Build Images') {
             steps {
                 script {
-                    docker.build("${BACKEND_IMAGE}:${env.BUILD_NUMBER}", "./backend")
+                    docker.build("agave-discovery:${env.BUILD_NUMBER}", "./services/discovery")
+                    docker.build("agave-gateway:${env.BUILD_NUMBER}", "./services/gateway")
+                    docker.build("agave-identity:${env.BUILD_NUMBER}", "./services/identity")
+                    docker.build("agave-core:${env.BUILD_NUMBER}", "./backend")
                     docker.build("${FRONTEND_IMAGE}:${env.BUILD_NUMBER}", "./frontend")
                 }
             }
