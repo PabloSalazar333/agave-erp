@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { Lock, Mail, Loader2, ArrowRight } from 'lucide-react';
 import logo from '../assets/logo.png';
@@ -92,9 +92,9 @@ const Login = () => {
                                 <label className="block text-sm font-medium text-gray-700" htmlFor="password">
                                     Password
                                 </label>
-                                <a href="#" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors">
+                                <Link to="/forgot-password" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors">
                                     Forgot password?
-                                </a>
+                                </Link>
                             </div>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -131,7 +131,7 @@ const Login = () => {
                     <div className="mt-6 text-center">
                         <p className="text-sm text-gray-500">
                             Don&apos;t have an account?{' '}
-                            <a href="#" className="font-medium text-primary hover:text-primary/80 transition-colors">
+                            <a href="mailto:admin@agaveerp.com" className="font-medium text-primary hover:text-primary/80 transition-colors">
                                 Contact Administrator
                             </a>
                         </p>
