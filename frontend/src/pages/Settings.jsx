@@ -9,7 +9,8 @@ const Settings = () => {
     const [selectedIndustry, setSelectedIndustry] = useState(localStorage.getItem('dev_industry') || 'GENERIC');
 
     const availableRoles = [
-        'ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_FINANCE', 'ROLE_HR', 'ROLE_LOGISTICS', 'ROLE_SALES', 'ROLE_USER'
+        'ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_FINANCE', 'ROLE_HR', 'ROLE_LOGISTICS', 'ROLE_SALES', 'ROLE_USER',
+        'ROLE_DEV', 'ROLE_QA', 'ROLE_BA', 'ROLE_SUPPORT'
     ];
 
     const availableIndustries = [
