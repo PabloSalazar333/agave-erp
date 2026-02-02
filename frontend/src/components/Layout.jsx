@@ -7,14 +7,49 @@ const Layout = () => {
     const location = useLocation();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const user = JSON.parse(localStorage.getItem('user') || '{}');
+    // Helper to check if user has ANY of the required roles
+    const hasRole = (allowedRoles) => {
+        if (!user.roles || user.roles.length === 0) return false;
+        // Super Admin has access to everything
+        if (user.roles.some(r => r.name === 'ROLE_SUPER_ADMIN')) return true;
+        return user.roles.some(r => allowedRoles.includes(r.name));
+    };
 
-    const navigation = [
-        { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-        { name: 'Users', href: '/users', icon: Users },
-        { name: 'Inventory', href: '/inventory', icon: Package },
-        { name: 'HR & Payroll', href: '/hr', icon: FileText },
-        { name: 'Settings', href: '/settings', icon: Settings },
+    const allNavigation = [
+        {
+            name: 'Dashboard',
+            href: '/',
+            icon: LayoutDashboard,
+            allowed: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_FINANCE', 'ROLE_HR', 'ROLE_LOGISTICS', 'ROLE_SALES', 'ROLE_PURCHASING']
+        },
+        {
+            name: 'Users',
+            href: '/users',
+            icon: Users,
+            allowed: ['ROLE_ADMIN', 'ROLE_HR']
+        },
+        {
+            name: 'Inventory',
+            href: '/inventory',
+            icon: Package,
+            allowed: ['ROLE_LOGISTICS', 'ROLE_PURCHASING', 'ROLE_SALES', 'ROLE_FINANCE']
+        },
+        {
+            name: 'HR & Payroll',
+            href: '/hr',
+            icon: FileText,
+            allowed: ['ROLE_HR', 'ROLE_FINANCE', 'ROLE_ADMIN']
+        },
+        {
+            name: 'Settings',
+            href: '/settings',
+            icon: Settings,
+            allowed: ['ROLE_ADMIN']
+        },
     ];
+
+    // Filter navigation based on user roles
+    const navigation = allNavigation.filter(item => hasRole(item.allowed));
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -39,8 +74,8 @@ const Layout = () => {
                                 key={item.name}
                                 to={item.href}
                                 className={`flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${isActive
-                                        ? 'bg-primary/10 text-primary shadow-sm'
-                                        : 'text-gray-600 hover:bg-gray-50 hover:text-dark'
+                                    ? 'bg-primary/10 text-primary shadow-sm'
+                                    : 'text-gray-600 hover:bg-gray-50 hover:text-dark'
                                     }`}
                             >
                                 <Icon className={`w-5 h-5 mr-3 ${isActive ? 'text-primary' : 'text-gray-400'}`} />

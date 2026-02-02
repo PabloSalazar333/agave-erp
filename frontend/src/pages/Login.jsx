@@ -131,7 +131,10 @@ const Login = () => {
                     <div className="mt-6 text-center">
                         <p className="text-sm text-gray-500">
                             Don&apos;t have an account?{' '}
-                            <a href="mailto:admin@agaveerp.com" className="font-medium text-primary hover:text-primary/80 transition-colors">
+                            <a
+                                href="mailto:admin@agaveerp.com?subject=Support%20Request%20-%20Agave%20ERP&body=Dear%20Administrator%2C%0A%0AI%20am%20requesting%20assistance%20with%20my%20Agave%20ERP%20account.%20Please%20advise.%0A%0AThank%20you."
+                                className="font-medium text-primary hover:text-primary/80 transition-colors"
+                            >
                                 Contact Administrator
                             </a>
                         </p>
