@@ -28,6 +28,11 @@ public class Tenant {
     @Column(nullable = false)
     private boolean active = true;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private IndustryType type = IndustryType.GENERIC;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;

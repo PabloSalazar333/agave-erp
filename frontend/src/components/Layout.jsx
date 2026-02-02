@@ -1,18 +1,26 @@
 import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, Package, FileText, Settings, LogOut, Menu, X, Bell } from 'lucide-react';
+import { LayoutDashboard, Users, Package, FileText, Settings, LogOut, Menu, X, Bell, Utensils, Bed, Wrench } from 'lucide-react';
+import { LayoutDashboard, Users, Package, FileText, Settings, LogOut, Menu, X, Bell, Utensils, Bed, Wrench } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 const Layout = () => {
     const location = useLocation();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    // Helper to check if user has ANY of the required roles
-    const hasRole = (allowedRoles) => {
+    const currentIndustry = localStorage.getItem('dev_industry') || 'GENERIC';
+
+    // Helper to check if user has ANY of the required roles AND matches Industry
+    const hasAccess = (item) => {
+        // 1. Check Industry (if item has restricted industries)
+        if (item.industries && !item.industries.includes(currentIndustry)) {
+            return false;
+        }
+
+        // 2. Check Roles
         if (!user.roles || user.roles.length === 0) return false;
-        // Super Admin has access to everything
         if (user.roles.some(r => r.name === 'ROLE_SUPER_ADMIN')) return true;
-        return user.roles.some(r => allowedRoles.includes(r.name));
+        return user.roles.some(r => item.allowed.includes(r.name));
     };
 
     const allNavigation = [
@@ -21,6 +29,27 @@ const Layout = () => {
             href: '/',
             icon: LayoutDashboard,
             allowed: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_FINANCE', 'ROLE_HR', 'ROLE_LOGISTICS', 'ROLE_SALES', 'ROLE_PURCHASING']
+        },
+        {
+            name: 'Tables & Kitchen',
+            href: '/restaurant/tables',
+            icon: Utensils, // You'll need to import this
+            allowed: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SALES'],
+            industries: ['RESTAURANT']
+        },
+        {
+            name: 'Rooms & Guests',
+            href: '/hotel/rooms',
+            icon: Bed, // You'll need to import this
+            allowed: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SALES'],
+            industries: ['HOTEL']
+        },
+        {
+            name: 'Service Tickets',
+            href: '/service/tickets',
+            icon: Wrench, // You'll need to import this
+            allowed: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SALES'],
+            industries: ['SERVICE_PROVIDER']
         },
         {
             name: 'Users',
@@ -32,7 +61,8 @@ const Layout = () => {
             name: 'Inventory',
             href: '/inventory',
             icon: Package,
-            allowed: ['ROLE_LOGISTICS', 'ROLE_PURCHASING', 'ROLE_SALES', 'ROLE_FINANCE']
+            allowed: ['ROLE_LOGISTICS', 'ROLE_PURCHASING', 'ROLE_SALES', 'ROLE_FINANCE', 'ROLE_ADMIN'],
+            industries: ['GENERIC', 'RETAIL', 'RESTAURANT'] // Hotels might use a different system? Or keep generic.
         },
         {
             name: 'HR & Payroll',
@@ -48,8 +78,8 @@ const Layout = () => {
         },
     ];
 
-    // Filter navigation based on user roles
-    const navigation = allNavigation.filter(item => hasRole(item.allowed));
+    // Filter navigation
+    const navigation = allNavigation.filter(hasAccess);
 
     const handleLogout = () => {
         localStorage.removeItem('token');

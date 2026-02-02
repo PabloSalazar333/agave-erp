@@ -3,32 +3,30 @@ import { Settings as SettingsIcon, Shield, RefreshCw } from 'lucide-react';
 
 const Settings = () => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
+    // Mocking tenant config for dev purposes since it's usually on the tenant object
     const [selectedRole, setSelectedRole] = useState(user.roles && user.roles.length > 0 ? user.roles[0].name : 'ROLE_USER');
+    const [selectedIndustry, setSelectedIndustry] = useState(localStorage.getItem('dev_industry') || 'GENERIC');
 
     const availableRoles = [
-        'ROLE_SUPER_ADMIN',
-        'ROLE_ADMIN',
-        'ROLE_FINANCE',
-        'ROLE_COLLECTION',
-        'ROLE_HR',
-        'ROLE_LOGISTICS',
-        'ROLE_SALES',
-        'ROLE_PURCHASING',
-        'ROLE_USER'
+        'ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_FINANCE', 'ROLE_HR', 'ROLE_LOGISTICS', 'ROLE_SALES', 'ROLE_USER'
     ];
 
-    const handleRoleChange = (e) => {
-        setSelectedRole(e.target.value);
-    };
+    const availableIndustries = [
+        'GENERIC', 'RESTAURANT', 'HOTEL', 'RETAIL', 'SERVICE_PROVIDER'
+    ];
 
-    const applyRole = () => {
+    const handleRoleChange = (e) => setSelectedRole(e.target.value);
+    const handleIndustryChange = (e) => setSelectedIndustry(e.target.value);
+
+    const applyChanges = () => {
         const updatedUser = {
             ...user,
-            roles: [{ id: 999, name: selectedRole }] // Mocking the role object structure
+            roles: [{ id: 999, name: selectedRole }]
         };
         localStorage.setItem('user', JSON.stringify(updatedUser));
+        localStorage.setItem('dev_industry', selectedIndustry); // Store industry preference locally for dev
         setUser(updatedUser);
-        window.location.reload(); // Reload to refresh Sidebar permissions
+        window.location.reload();
     };
 
     return (
@@ -45,8 +43,8 @@ const Settings = () => {
                     </div>
                 </div>
                 <div className="p-6">
-                    <div className="flex items-center gap-4">
-                        <div className="flex-1">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Active Role
                             </label>
@@ -60,18 +58,35 @@ const Settings = () => {
                                 ))}
                             </select>
                         </div>
-                        <div className="flex-none pt-6">
-                            <button
-                                onClick={applyRole}
-                                className="flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-secondary hover:bg-secondary/90 transition-colors shadow-sm"
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Industry Type
+                            </label>
+                            <select
+                                value={selectedIndustry}
+                                onChange={handleIndustryChange}
+                                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-lg border bg-white"
                             >
-                                <RefreshCw className="w-4 h-4 mr-2" />
-                                Switch Role
-                            </button>
+                                {availableIndustries.map((ind) => (
+                                    <option key={ind} value={ind}>{ind}</option>
+                                ))}
+                            </select>
                         </div>
                     </div>
-                    <div className="mt-4 p-4 bg-blue-50 rounded-lg text-sm text-blue-700 border border-blue-100">
-                        <strong>Current Session Role:</strong> {user.roles && user.roles.length > 0 ? user.roles[0].name : 'None'}
+
+                    <div className="flex justify-end">
+                        <button
+                            onClick={applyChanges}
+                            className="flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-secondary hover:bg-secondary/90 transition-colors shadow-sm"
+                        >
+                            <RefreshCw className="w-4 h-4 mr-2" />
+                            Apply Changes
+                        </button>
+                    </div>
+
+                    <div className="mt-4 p-4 bg-blue-50 rounded-lg text-sm text-blue-700 border border-blue-100 flex justify-between">
+                        <span><strong>Role:</strong> {user.roles && user.roles.length > 0 ? user.roles[0].name : 'None'}</span>
+                        <span><strong>Industry:</strong> {localStorage.getItem('dev_industry') || 'GENERIC'}</span>
                     </div>
                 </div>
             </div>
