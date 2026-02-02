@@ -102,4 +102,48 @@ const Settings = () => {
     );
 };
 
+// Sub-component for style customization
+const StyleCustomizer = () => {
+    const { theme, updateTheme } = useTheme();
+
+    return (
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+            <div className="p-6 border-b border-gray-100 bg-gray-50 flex items-center">
+                <SettingsIcon className="w-5 h-5 text-gray-500 mr-3" />
+                <div>
+                    <h2 className="font-semibold text-gray-800">Visual Personalization</h2>
+                    <p className="text-xs text-gray-500">Customize the look and feel of your ERP.</p>
+                </div>
+            </div>
+            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Primary Color</label>
+                    <div className="flex items-center gap-3">
+                        <input
+                            type="color"
+                            value={theme.primaryColor}
+                            onChange={(e) => updateTheme('primaryColor', e.target.value)}
+                            className="h-10 w-20 rounded cursor-pointer border-0 p-0"
+                        />
+                        <span className="text-sm text-gray-500 uppercase">{theme.primaryColor}</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Font Style</label>
+                    <select
+                        value={theme.fontFamily}
+                        onChange={(e) => updateTheme('fontFamily', e.target.value)}
+                        className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-lg border bg-white"
+                    >
+                        <option value="Inter">Modern (Inter)</option>
+                        <option value="serif">Elegant (Serif)</option>
+                        <option value="monospace">Technical (Monospace)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 export default Settings;

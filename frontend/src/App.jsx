@@ -11,6 +11,7 @@ import TableMap from './pages/TableMap';
 import ServiceCalendar from './pages/ServiceCalendar';
 import HotelRooms from './pages/HotelRooms';
 import Analytics from './pages/Analytics';
+import Help from './pages/Help';
 import { ThemeProvider } from './context/ThemeContext';
 
 // Simple protected route component
@@ -48,6 +49,7 @@ function App() {
                         <Route path="analytics" element={<Analytics />} />
                         <Route path="hr" element={<HR />} />
                         <Route path="settings" element={<Settings />} />
+                        <Route path="help" element={<Help />} />
                     </Route>
                 </Routes>
             </Router>

@@ -77,6 +77,12 @@ const Layout = () => {
             icon: Settings,
             allowed: ['ROLE_ADMIN']
         },
+        {
+            name: 'Help Center',
+            href: '/help',
+            icon: HelpCircle,
+            allowed: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_HR', 'ROLE_FINANCE', 'ROLE_LOGISTICS', 'ROLE_SALES', 'ROLE_PURCHASING']
+        },
     ];
 
     // Filter navigation
