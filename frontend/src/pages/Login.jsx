@@ -130,7 +130,7 @@ const Login = () => {
 
                     <div className="mt-6 text-center">
                         <p className="text-sm text-gray-500">
-                            Don't have an account?{' '}
+                            Don&apos;t have an account?{' '}
                             <a href="#" className="font-medium text-primary hover:text-primary/80 transition-colors">
                                 Contact Administrator
                             </a>

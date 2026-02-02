@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
-import { useState } from 'react';
 
 // Simple protected route component
 const ProtectedRoute = ({ children }) => {
