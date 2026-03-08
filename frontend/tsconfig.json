@@ -15,13 +15,11 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": "./agave-erp",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     }
   },
-  "include": [
-    "agave-erp/src"
-  ],
-  "references": [{ "path": "./tsconfig.node.json"}]
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
