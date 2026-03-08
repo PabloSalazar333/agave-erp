@@ -24,17 +24,22 @@ public class AuthController {
     private final JwtTokenProvider tokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AuthRequestDTO authRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authRequest.getEmail(),
-                        authRequest.getPassword()));
+    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
+        Authentication auth = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                body.get("email"),
+                body.get("password")
+            )
+        );
+        String token = tokenProvider.generateToken(auth);
+        return ResponseEntity.ok(Map.of(
+            "token", token,
+            "type", "Bearer"
+        ));
+    }
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.generateToken(authentication);
-
-        return ResponseEntity.ok(AuthResponseDTO.builder()
-                .accessToken(jwt)
-                .build());
+    @GetMapping("/me")
+    public ResponseEntity<?> me(Authentication auth) {
+        return ResponseEntity.ok(Map.of("email", auth.getName()));
     }
 }
