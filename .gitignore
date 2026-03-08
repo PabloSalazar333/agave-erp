@@ -1,2 +1,8 @@
 Tesis/PABLO ESTEBAN SALAZAR MARQUEZ - Tesis..docx
 fix_password.sql
+node_modules/
+frontend/node_modules/
+dist/
+.vite/
+.env
+.env.*
