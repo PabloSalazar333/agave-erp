@@ -1,7 +1,7 @@
 ﻿FROM eclipse-temurin:21-jdk-alpine AS builder
 WORKDIR /app
 COPY . .
-RUN ./gradlew clean build -x test
+RUN chmod +x gradlew && ./gradlew clean build -x test
 
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
