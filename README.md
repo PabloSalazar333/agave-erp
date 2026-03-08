@@ -284,18 +284,3 @@ frontend/
 4. Crea tu página en `src/modules/<modulo>/`
 5. Registra la ruta en `src/App.tsx`
 6. Agrega la entrada de navegación en `src/layouts/MainLayout.tsx`
-
-### Configuración CORS (Requerida)
-
-Agrega esto a tu `SecurityConfig.java` para que el frontend pueda comunicarse con el backend:
-
-```java
-.cors(cors -> cors.configurationSource(request -> {
-    var config = new CorsConfiguration();
-    config.setAllowedOrigins(List.of("http://localhost:5173"));
-    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    config.setAllowedHeaders(List.of("*"));
-    config.setAllowCredentials(true);
-    return config;
-}))
-```
