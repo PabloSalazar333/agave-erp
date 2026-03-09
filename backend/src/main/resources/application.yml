@@ -1,20 +1,38 @@
 ﻿server:
-  port: 8081
+  port: ${PORT:8081}
 
 spring:
   application:
-    name: core-service
+    name: agave-api
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/agave_erp}
+    username: ${SPRING_DATASOURCE_USERNAME:agave_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:agave_password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
 
 eureka:
   client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
+    enabled: false
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 
 info:
   app:
