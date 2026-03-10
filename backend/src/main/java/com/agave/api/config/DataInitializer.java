@@ -17,7 +17,12 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        createDefaultAdmin();
+        try {
+            createDefaultAdmin();
+        } catch (Exception e) {
+            System.err.println("ERROR en DataInitializer: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void createDefaultAdmin() {
