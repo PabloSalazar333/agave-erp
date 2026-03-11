@@ -25,6 +25,7 @@ public class CorsFilter implements Filter {
         // Always set CORS headers for every request
         if (origin != null && (
                 origin.equals("http://localhost:5173") ||
+                origin.endsWith(".vercel.app") ||
                 origin.equals("https://agave-erp-rose.vercel.app"))) {
             response.setHeader("Access-Control-Allow-Origin", origin);
             response.setHeader("Access-Control-Allow-Credentials", "true");
