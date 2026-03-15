@@ -44,6 +44,6 @@ public class StockMovement {
     private Integer stockAfter;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(updatable = false, insertable = false)
     private LocalDateTime createdAt;
 }

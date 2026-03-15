@@ -34,7 +34,7 @@ public class Tenant {
     private IndustryType type = IndustryType.GENERIC;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(updatable = false, insertable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp

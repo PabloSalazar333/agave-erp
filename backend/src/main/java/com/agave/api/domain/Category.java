@@ -35,7 +35,7 @@ public class Category {
     private Tenant tenant;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(updatable = false, insertable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp

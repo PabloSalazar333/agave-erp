@@ -47,7 +47,7 @@ public class Product {
     private Tenant tenant;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(updatable = false, insertable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
