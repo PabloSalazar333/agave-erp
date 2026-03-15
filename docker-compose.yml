@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
   agave-db:
     image: postgres:16-alpine
     container_name: agave_postgres
@@ -11,59 +12,72 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - postgres_data_v2:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     restart: always
-
-  discovery-service:
-    build: ./services/discovery
-    container_name: agave-discovery
-    ports:
-      - "8761:8761"
-    environment:
-      - JAVA_OPTS=-Xmx256m -Xms256m
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8761/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      test: ["CMD-SHELL", "pg_isready -U agave_admin -d agave_erp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  gateway-service:
-    build: ./services/gateway
-    container_name: agave-gateway
-    ports:
-      - "8080:8080"
-    environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://agave-discovery:8761/eureka/
-      - JAVA_OPTS=-Xmx256m -Xms256m
-    depends_on:
-      - discovery-service
-
-  identity-service:
-    build: ./services/identity
-    container_name: agave-identity
-    ports:
-      - "8082:8082"
-    environment:
-      - SERVER_PORT=8082
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://agave-discovery:8761/eureka/
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://agave-db:5432/agave_erp
-      - JAVA_OPTS=-Xmx256m -Xms256m
-    depends_on:
-      - discovery-service
-      - agave-db
-
-  core-backend:
+  agave-api:
     build: ./backend
-    container_name: agave-core
+    container_name: agave_api
     ports:
       - "8081:8081"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://agave-discovery:8761/eureka/
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://agave-db:5432/agave_erp
-      - JAVA_OPTS=-Xmx256m -Xms256m
+      - DATABASE_URL=jdbc:postgresql://agave-db:5432/agave_erp
+      - DATABASE_USER=agave_admin
+      - DATABASE_PASSWORD=secure_password_123
+      - OTEL_ENDPOINT=http://otel-collector:4318
+      - TENANT_ID=tenant-1
+      - ENVIRONMENT=local
     depends_on:
-      - discovery-service
-      - agave-db
+      agave-db:
+        condition: service_healthy
+    restart: always
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.111.0
+    container_name: agave_otel_collector
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./services/observability/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4317:4317"   # gRPC
+      - "4318:4318"   # HTTP
+      - "8889:8889"   # Prometheus metrics del collector
+    depends_on:
+      - agave-api
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: agave_prometheus
+    volumes:
+      - ./services/observability/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=7d'
+    depends_on:
+      - agave-api
+
+  grafana:
+    image: grafana/grafana:11.3.0
+    container_name: agave_grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=agave123
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./services/observability/grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
 
 volumes:
-  postgres_data_v2:
+  postgres_data:
+  grafana_data:
